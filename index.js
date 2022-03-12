@@ -51,9 +51,17 @@ const run = async () => {
     app.get("/currentUser/:email", async (req, res)=> {
       const query = {email:req.params.email};
       const result = await userCollection.findOne(query);
-      console.log(result)
       res.json(result);
-    })
+    });
+
+    // search member
+    app.get("/searchMember/:data", async (req, res)=> {
+      const query = {roll:req.params.data};
+      const query2 = {reg:req.params.data}
+      const result = await userCollection.findOne(query);
+      const result2 = await userCollection.findOne(query2);
+      res.json(result || result2);
+    });
 
   }finally{
 
