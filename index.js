@@ -5,10 +5,11 @@ const { MongoClient, ServerApiVersion, ObjectId  } = require('mongodb');
 const res = require("express/lib/response");
 const objectId = require("mongodb").objectId;
 require('dotenv').config();
+const uploadFile = require("express-fileupload")
 const port = process.env.PORT || 5500;
 app.use(cors());
 app.use(express.json());
-
+app.use(uploadFile());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.muk27.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -46,6 +47,7 @@ const run = async () => {
       res.json(result);
     });
 
+    // update social media links
     app.put("/add-social/:id", async (req, res) => {
       const userId = req.params.id;
       const query = {_id : ObjectId(userId)}
@@ -76,6 +78,20 @@ const run = async () => {
       const result = await userCollection.findOne(query);
       const result2 = await userCollection.findOne(query2);
       res.json(result || result2);
+    });
+
+    // upload profile pic
+    app.put("/upload-profile/:id", async (req, res) => {
+      const userId = req.params.id;
+      const file = req.files.image;
+      const picData = file.data;
+      const encodedPic = picData.toString('base64');
+      const imageBuffer = Buffer.from(encodedPic, 'base64');
+      const image = {profilePic: imageBuffer};
+      const query = {_id:ObjectId(userId)};
+      const update = {$set:image};
+      const result = await userCollection.updateOne(query, update)
+      res.json(result)
     });
 
   }finally{
