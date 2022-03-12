@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { MongoClient, ServerApiVersion  } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId  } = require('mongodb');
 const res = require("express/lib/response");
 const objectId = require("mongodb").objectId;
 require('dotenv').config();
@@ -41,11 +41,18 @@ const run = async () => {
     // Update user details setup information API
     app.put("/user", async (req, res) => {
       const query = {email:req.body.email};
-      const option = {upsert: true};
       const userInfo = {$set: req.body};
-      const result = await userCollection.updateOne(query, userInfo, option);
+      const result = await userCollection.updateOne(query, userInfo);
       res.json(result);
     });
+
+    app.put("/add-social/:id", async (req, res) => {
+      const userId = req.params.id;
+      const query = {_id : ObjectId(userId)}
+      const update = {$set:req.body};
+      const result = await userCollection.updateOne(query, update);
+      res.json(result);
+    })
 
     // get current user
     app.get("/currentUser/:email", async (req, res)=> {
@@ -53,6 +60,14 @@ const run = async () => {
       const result = await userCollection.findOne(query);
       res.json(result);
     });
+
+    // get user
+    app.get("/getUser/:id", async (req, res) => {
+      const userId = req.params.id;
+      const query = {_id:ObjectId(userId)}
+      const result = await userCollection.findOne(query);
+      res.json(result);
+    })
 
     // search member
     app.get("/searchMember/:data", async (req, res)=> {
