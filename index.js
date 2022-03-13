@@ -54,8 +54,8 @@ const run = async () => {
       const update = {$set:req.body};
       const result = await userCollection.updateOne(query, update);
       res.json(result);
-    })
-
+    });
+    
     // get current user
     app.get("/currentUser/:email", async (req, res)=> {
       const query = {email:req.params.email};
@@ -94,8 +94,17 @@ const run = async () => {
       res.json(result)
     });
 
-  }finally{
+    // update CR
+    app.put("/upload-cr-ship/:id", async (req, res) => {
+      const userId = req.params.id;
+      const query = {_id : ObjectId(userId)}
+      const update = {$set:req.body};
+      const result = await userCollection.updateOne(query, update);
+      res.json(result);
+    });
 
+  }finally{
+    
   }
 }
 run().catch(console.dir);
