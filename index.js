@@ -103,12 +103,28 @@ const run = async () => {
 
     // approve cr status
     app.put("/approve-cr/:id", async (req, res) => {
-      const approve = {CRstatus:"verified", isCR:false};
+      const approve = {CRstatus:"verified", isCR: true};
       const query = {_id: ObjectId(req.params.id)};
       const update = {$set: approve};
       const result = await userCollection.updateOne(query, update);
       res.json(result);
-    })
+    });
+
+    // delete CR-ship
+    app.put("/remove-cr/:id", async (req, res) => {
+      const query = {_id : ObjectId(req.params.id)};
+      const removed = {isCR: false, CRstatus: "rejected"};
+      const update = {$set : removed};
+      const result = await userCollection.updateOne(query, update);
+      res.json(result)
+    });
+
+    // delete user/member
+    app.delete('/delete-member/:id', async (req, res) => {
+      const query = {_id : ObjectId(req.params.id)};
+      const result = await userCollection.deleteOne(query);
+      res.json(result);
+    });
 
   }finally{
     app.get("/", async (req, res) => {
