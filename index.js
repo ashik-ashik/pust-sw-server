@@ -33,7 +33,7 @@ const run = async () => {
     });
     // get All users API
     app.get("/users", async (req, res) => {
-      const result = await userCollection.find({}).toArray();
+      const result = await userCollection.find({}).sort({_id:-1}).toArray();
       res.json(result);
     });
 
