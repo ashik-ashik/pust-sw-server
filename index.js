@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId  } = require('mongodb');
-const res = require("express/lib/response");
+// const res = require("express/lib/response");
 const objectId = require("mongodb").objectId;
 require('dotenv').config();
 const uploadFile = require("express-fileupload")
@@ -10,6 +10,7 @@ const port = process.env.PORT || 5500;
 app.use(cors());
 app.use(express.json());
 app.use(uploadFile());
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.muk27.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -21,10 +22,7 @@ const run = async () => {
     const database = client.db("pust_sw");
     const userCollection = database.collection("members");
 
-    // Empty API
-    app.get("/", async (req, res) => {
-      console.log("Server is on!")
-    });
+
     
     // Add a new user API
     app.post("/user", async (req, res) => {
@@ -104,11 +102,18 @@ const run = async () => {
     });
 
   }finally{
-    
+    app.get("/", async (req, res) => {
+      console.log("Server is on!")
+      res.send("PUST-SW Server is on")
+    });
   }
 }
 run().catch(console.dir);
 
+app.get("/", async (req, res) => {
+  console.log("Server is on!")
+  res.send("PUST-SW Server is on")
+});
 
 app.listen(port, () => {
   console.log("PUST SW server is on!!!", port )
