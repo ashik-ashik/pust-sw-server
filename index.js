@@ -101,6 +101,15 @@ const run = async () => {
       res.json(result);
     });
 
+    // approve cr status
+    app.put("/approve-cr/:id", async (req, res) => {
+      const approve = {CRstatus:"verified", isCR:false};
+      const query = {_id: ObjectId(req.params.id)};
+      const update = {$set: approve};
+      const result = await userCollection.updateOne(query, update);
+      res.json(result);
+    })
+
   }finally{
     app.get("/", async (req, res) => {
       console.log("Server is on!")
