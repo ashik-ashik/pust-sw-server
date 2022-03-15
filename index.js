@@ -144,6 +144,13 @@ const run = async () => {
       const notice = {_id : ObjectId(req.params.id)};
       const result = await noticeCollection.findOne(notice);
       res.json(result);
+    });
+
+    // delete notice
+    app.delete("/notice-delete/:id", async (req, res) => {
+      const query = {_id : ObjectId(req.params.id)};
+      const result = await noticeCollection.deleteOne(query);
+      res.json(result);
     })
 
 
