@@ -21,6 +21,7 @@ const run = async () => {
     // create database and data tables
     const database = client.db("pust_sw");
     const userCollection = database.collection("members");
+    const noticeCollection = database.collection("notices");
 
 
     
@@ -125,6 +126,26 @@ const run = async () => {
       const result = await userCollection.deleteOne(query);
       res.json(result);
     });
+
+    // publish Notice
+    app.post("/publish-notice", async (req, res) => {
+      const notice = req.body;
+      notice.publishDate = new Date().toLocaleDateString()
+      const result = await noticeCollection.insertOne(notice)
+      res.json(result)
+    });
+    // load all notice
+    app.get("/notices", async (req, res) => {
+      const result = await noticeCollection.find({}).sort({_id: -1}).toArray();
+      res.json(result);
+    });
+    // load a single notice
+    app.get("/notice/:id", async (req, res)=> {
+      const notice = {_id : ObjectId(req.params.id)};
+      const result = await noticeCollection.findOne(notice);
+      res.json(result);
+    })
+
 
   }finally{
     app.get("/", async (req, res) => {
