@@ -45,6 +45,15 @@ const run = async () => {
       const result = await userCollection.updateOne(query, userInfo);
       res.json(result);
     });
+    // Update user details setup information API
+    app.put("/add-contact/:id", async (req, res) => {
+      const query = {_id:ObjectId(req.params.id)};
+      const userInfo = {$set: req.body};
+      const result = await userCollection.updateOne(query, userInfo);
+      console.log(req.params.id,  req.body, result)
+      
+      res.json(result);
+    });
 
     // update social media links
     app.put("/add-social/:id", async (req, res) => {
