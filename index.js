@@ -164,7 +164,6 @@ const run = async () => {
       const blood = (req.params.blood);
       const query = {blood : blood};
       const result = await userCollection.find(query).toArray();
-      console.log(query, result)
       res.json(result)
     })    
 
