@@ -160,6 +160,14 @@ const run = async () => {
       res.json(result);
     })
 
+    app.get("/search-blood/:blood", async (req, res) => {
+      const blood = (req.params.blood);
+      const query = {blood : blood};
+      const result = await userCollection.find(query).toArray();
+      console.log(query, result)
+      res.json(result)
+    })    
+
 
   }finally{
     app.get("/", async (req, res) => {
