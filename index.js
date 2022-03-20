@@ -21,6 +21,7 @@ const run = async () => {
     // create database and data tables
     const database = client.db("pust_sw");
     const userCollection = database.collection("members");
+    const userAuthCollection = database.collection("useAuth");
     const noticeCollection = database.collection("notices");
 
 
@@ -30,6 +31,13 @@ const run = async () => {
       const data = req.body;
       const userInfo = {fullName: data.displayName, email:data.email, registerDate: new Date().toLocaleDateString()};
       const result = await userCollection.insertOne(userInfo);
+      res.json(result);
+    });
+    // Add a new user API
+    app.post("/userAuth", async (req, res) => {
+      const data = req.body;
+      const result = await userAuthCollection.insertOne(data);
+      console.log(data);
       res.json(result);
     });
     // get All users API
@@ -158,14 +166,7 @@ const run = async () => {
       const query = {_id : ObjectId(req.params.id)};
       const result = await noticeCollection.deleteOne(query);
       res.json(result);
-    })
-
-    app.get("/search-blood/:blood", async (req, res) => {
-      const blood = (req.params.blood);
-      const query = {blood : blood};
-      const result = await userCollection.find(query).toArray();
-      res.json(result)
-    })    
+    });
 
 
   }finally{
