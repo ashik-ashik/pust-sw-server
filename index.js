@@ -42,8 +42,30 @@ const run = async () => {
     });
     // get All users API
     app.get("/users", async (req, res) => {
-      const result = await userCollection.find({}).sort({_id:-1}).toArray();
-      res.json(result);
+      const members = await  userCollection.find({}).sort({_id:-1}).toArray();
+      res.json(members);
+    });
+    // get All users API
+    app.get("/fearured-members", async (req, res) => {
+      const members = await  userCollection.find({}).limit(4).sort({_id:-1}).toArray();
+      res.json(members);
+    });
+
+    app.get("/member-show", async (req, res) => {
+      const cursor =  userCollection.find({})
+      const counts = await userCollection.find({}).count(); //collection.countDocuments
+      const page = req.query.page;
+      const size = parseInt(req.query.size);
+      let members;
+      if(page){
+        members = await cursor.skip(page*size).limit(size).sort({_id:-1}).toArray();
+      }else{
+        members = await cursor.limit(size).sort({_id:-1}).toArray();
+      }
+      res.json({
+        counts,
+        members
+      });
     });
 
     // Update user details setup information API
