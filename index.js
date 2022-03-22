@@ -200,7 +200,7 @@ const run = async () => {
     });
     // load events
     app.get("/events", async (req, res) => {
-      const result = await eventsCollection.find({}).toArray()
+      const result = await eventsCollection.find({}).sort({_id:-1}).toArray()
       res.json(result)
     });
 
