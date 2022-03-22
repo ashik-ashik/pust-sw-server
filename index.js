@@ -23,6 +23,7 @@ const run = async () => {
     const userCollection = database.collection("members");
     const userAuthCollection = database.collection("useAuth");
     const noticeCollection = database.collection("notices");
+    const eventsCollection = database.collection("events");
 
 
     
@@ -182,13 +183,40 @@ const run = async () => {
       const result = await noticeCollection.findOne(notice);
       res.json(result);
     });
-
+    
     // delete notice
     app.delete("/notice-delete/:id", async (req, res) => {
       const query = {_id : ObjectId(req.params.id)};
       const result = await noticeCollection.deleteOne(query);
       res.json(result);
     });
+    
+    // publish event
+    app.post("/publish-event", async (req, res) => {
+      const notice = req.body;
+      notice.publishDate = new Date().toLocaleDateString()
+      const result = await eventsCollection.insertOne(notice)
+      res.json(result)
+    });
+    // load event
+    app.get("/events", async (req, res) => {
+      const result = await eventsCollection.find({}).toArray()
+      res.json(result)
+    });
+
+    // load single event
+    app.get("/event/:id", async (req, res) => {
+      const query = {_id : ObjectId(req.params.id)}
+      const result = await eventsCollection.findOne(query)
+      res.json(result)
+    });
+    // load single event
+    app.delete("/event/:id", async (req, res) => {
+      const query = {_id : ObjectId(req.params.id)}
+      const result = await eventsCollection.deleteOne(query)
+      res.json(result)
+    });
+
 
 
   }finally{
