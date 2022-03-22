@@ -198,7 +198,7 @@ const run = async () => {
       const result = await eventsCollection.insertOne(notice)
       res.json(result)
     });
-    // load event
+    // load events
     app.get("/events", async (req, res) => {
       const result = await eventsCollection.find({}).toArray()
       res.json(result)
@@ -210,12 +210,19 @@ const run = async () => {
       const result = await eventsCollection.findOne(query)
       res.json(result)
     });
-    // load single event
-    app.delete("/event/:id", async (req, res) => {
+    // delete event
+    app.delete("/event-delete/:id", async (req, res) => {
       const query = {_id : ObjectId(req.params.id)}
       const result = await eventsCollection.deleteOne(query)
       res.json(result)
     });
+    // update event
+    app.put("/update-event/:id", async (req, res)=>{
+      const query = {_id : ObjectId(req.params.id)};
+      const update ={$set: req.body}
+      const result = await eventsCollection.updateOne(query, update);
+      res.json(result)
+    })
 
 
 
