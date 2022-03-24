@@ -30,6 +30,11 @@ const run = async () => {
     // Add a new user API
     app.post("/user", async (req, res) => {
       const data = req.body;
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const userInfo = {fullName: data.displayName, email:data.email, registerDate: new Date().toLocaleDateString()};
       const result = await userCollection.insertOne(userInfo);
       res.json(result);
@@ -43,16 +48,31 @@ const run = async () => {
     });
     // get All users API
     app.get("/users", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const members = await  userCollection.find({}).sort({_id:-1}).toArray();
       res.json(members);
     });
     // get All users API
     app.get("/fearured-members", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const members = await  userCollection.find({}).limit(4).sort({_id:-1}).toArray();
       res.json(members);
     });
 
     app.get("/member-show", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const cursor =  userCollection.find({})
       const counts = await userCollection.find({}).count(); //collection.countDocuments
       const page = req.query.page;
@@ -71,6 +91,11 @@ const run = async () => {
 
     // Update user details setup information API
     app.put("/user", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {email:req.body.email};
       const userInfo = {$set: req.body};
       const result = await userCollection.updateOne(query, userInfo);
@@ -78,6 +103,11 @@ const run = async () => {
     });
     // Update user details setup information API
     app.put("/add-contact/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {_id:ObjectId(req.params.id)};
       const userInfo = {$set: req.body};
       const result = await userCollection.updateOne(query, userInfo);      
@@ -86,6 +116,11 @@ const run = async () => {
 
     // update social media links
     app.put("/add-social/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const userId = req.params.id;
       const query = {_id : ObjectId(userId)}
       const update = {$set:req.body};
@@ -95,6 +130,11 @@ const run = async () => {
     
     // get current user
     app.get("/currentUser/:email", async (req, res)=> {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {email:req.params.email};
       const result = await userCollection.findOne(query);
       res.json(result);
@@ -102,6 +142,11 @@ const run = async () => {
 
     // get user
     app.get("/getUser/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const userId = req.params.id;
       const query = {_id:ObjectId(userId)}
       const result = await userCollection.findOne(query);
@@ -110,6 +155,11 @@ const run = async () => {
 
     // search member
     app.get("/searchMember/:data", async (req, res)=> {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {roll:req.params.data};
       const query2 = {reg:req.params.data}
       const result = await userCollection.findOne(query);
@@ -119,6 +169,11 @@ const run = async () => {
 
     // upload profile pic
     app.put("/upload-profile/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const userId = req.params.id;
       const file = req.files.image;
       const picData = file.data;
@@ -133,6 +188,11 @@ const run = async () => {
 
     // update CR
     app.put("/upload-cr-ship/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const userId = req.params.id;
       const query = {_id : ObjectId(userId)}
       const update = {$set:req.body};
@@ -142,6 +202,11 @@ const run = async () => {
 
     // approve cr status
     app.put("/approve-cr/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const approve = {CRstatus:"verified", isCR: true};
       const query = {_id: ObjectId(req.params.id)};
       const update = {$set: approve};
@@ -151,6 +216,11 @@ const run = async () => {
 
     // delete CR-ship
     app.put("/remove-cr/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {_id : ObjectId(req.params.id)};
       const removed = {isCR: false, CRstatus: "rejected"};
       const update = {$set : removed};
@@ -160,6 +230,11 @@ const run = async () => {
 
     // delete user/member
     app.delete('/delete-member/:id', async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {_id : ObjectId(req.params.id)};
       const result = await userCollection.deleteOne(query);
       res.json(result);
@@ -167,6 +242,11 @@ const run = async () => {
 
     // publish Notice
     app.post("/publish-notice", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const notice = req.body;
       notice.publishDate = new Date().toLocaleDateString()
       const result = await noticeCollection.insertOne(notice)
@@ -174,11 +254,21 @@ const run = async () => {
     });
     // load all notice
     app.get("/notices", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const result = await noticeCollection.find({}).sort({_id: -1}).toArray();
       res.json(result);
     });
     // load a single notice
     app.get("/notice/:id", async (req, res)=> {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const notice = {_id : ObjectId(req.params.id)};
       const result = await noticeCollection.findOne(notice);
       res.json(result);
@@ -186,6 +276,11 @@ const run = async () => {
     
     // delete notice
     app.delete("/notice-delete/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {_id : ObjectId(req.params.id)};
       const result = await noticeCollection.deleteOne(query);
       res.json(result);
@@ -193,6 +288,11 @@ const run = async () => {
     
     // publish event
     app.post("/publish-event", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const notice = req.body;
       notice.publishDate = new Date().toLocaleDateString()
       const result = await eventsCollection.insertOne(notice)
@@ -200,24 +300,44 @@ const run = async () => {
     });
     // load events
     app.get("/events", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const result = await eventsCollection.find({}).sort({_id:-1}).toArray()
       res.json(result)
     });
 
     // load single event
     app.get("/event/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {_id : ObjectId(req.params.id)}
       const result = await eventsCollection.findOne(query)
       res.json(result)
     });
     // delete event
     app.delete("/event-delete/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {_id : ObjectId(req.params.id)}
       const result = await eventsCollection.deleteOne(query)
       res.json(result)
     });
     // update event
     app.put("/update-event/:id", async (req, res)=>{
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const query = {_id : ObjectId(req.params.id)};
       const update ={$set: req.body}
       const result = await eventsCollection.updateOne(query, update);
@@ -229,6 +349,11 @@ const run = async () => {
   }finally{
     app.get("/", async (req, res) => {
       console.log("Server is on!")
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       res.send("PUST-SW Server is on")
     });
   }
@@ -236,6 +361,11 @@ const run = async () => {
 run().catch(console.dir);
 
 app.get("/", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
   console.log("Server is on!")
   res.send("PUST-SW Server is on")
 });
