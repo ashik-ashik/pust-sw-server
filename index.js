@@ -109,7 +109,7 @@ const run = async () => {
         "Origin, X-Requested-With, Content-Type, Accept"
       );
       const query = {_id:ObjectId(req.params.id)};
-      const userInfo = {$set: req.body};
+      const userInfo = {$set: {phone : req.body}};
       const result = await userCollection.updateOne(query, userInfo);      
       res.json(result);
     });
