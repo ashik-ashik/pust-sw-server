@@ -101,6 +101,7 @@ const run = async () => {
       const result = await userCollection.updateOne(query, userInfo);
       res.json(result);
     });
+
     // Update user details setup information API
     app.put("/add-contact/:id", async (req, res) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
@@ -110,6 +111,27 @@ const run = async () => {
       );
       const query = {_id:ObjectId(req.params.id)};
       const userInfo = {$set: {phone : req.body}};
+      const result = await userCollection.updateOne(query, userInfo);      
+      res.json(result);
+    });
+    // remove phone
+    app.put("/remove-phone/:id", async (req, res) => {
+      const query = {_id:ObjectId(req.params.id)};
+      const userInfo = {$set: {phone : req.body.phones}};
+      const result = await userCollection.updateOne(query, userInfo);      
+      res.json(result);
+    })
+
+    // make a number whatsapp
+    app.put("/add-whatsapp/:id", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
+      const query = {_id:ObjectId(req.params.id)};
+      const userInfo = {$set: {whatsApp : req.body.number}};
+      console.log(req.body, userInfo)
       const result = await userCollection.updateOne(query, userInfo);      
       res.json(result);
     });
