@@ -35,8 +35,9 @@ const run = async () => {
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
       );
-      const userInfo = {fullName: data.displayName, email:data.email, registerDate: new Date().toLocaleDateString()};
+      const userInfo = {fullName: data.fullName, email:data.email, verificationCode:data.verificationCode, registerDate: new Date().toLocaleDateString()};
       const result = await userCollection.insertOne(userInfo);
+      console.log(userInfo)
       res.json(result);
     });
     // Add a new user API
@@ -342,6 +343,7 @@ const run = async () => {
       const result = await eventsCollection.findOne(query)
       res.json(result)
     });
+
     // delete event
     app.delete("/event-delete/:id", async (req, res) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
@@ -353,6 +355,7 @@ const run = async () => {
       const result = await eventsCollection.deleteOne(query)
       res.json(result)
     });
+
     // update event
     app.put("/update-event/:id", async (req, res)=>{
       res.setHeader("Access-Control-Allow-Origin", "*");
@@ -364,6 +367,15 @@ const run = async () => {
       const update ={$set: req.body}
       const result = await eventsCollection.updateOne(query, update);
       res.json(result)
+    });
+
+
+    // update verification
+    app.put("/verify/:id", async (req, res) => {
+      const query = {_id : ObjectId(req.params.id)};
+      const update = {$set : req.body};
+      const result = await userCollection.updateOne(query, update);
+      res.json(result);
     })
 
 
