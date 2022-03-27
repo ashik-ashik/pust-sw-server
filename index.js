@@ -29,13 +29,13 @@ const run = async () => {
     
     // Add a new user API
     app.post("/user", async (req, res) => {
-      const data = req.body.user;
+      const data = req.body;
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.header(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
       );
-      const userInfo = {fullName: data.displayName, email:data.email, verificationCode:req.body.verificationCode, registerDate: new Date().toLocaleDateString()};
+      const userInfo = {fullName: data.displayName, email:data.email, registerDate: new Date().toLocaleDateString()};
       const result = await userCollection.insertOne(userInfo);
       res.json(result);
     });
