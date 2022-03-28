@@ -369,6 +369,17 @@ const run = async () => {
       res.json(result)
     });
 
+    // load home and letest event
+    app.get("events/home", async (req, res) => {
+      const result = await eventsCollection.find({}).limit(3).sort({_id:-1}).toArray();
+      res.json(result);
+    })
+    // load home and letest notice
+    app.get("notice/home", async (req, res) => {
+      const result = await noticeCollection.find({}).limit(3).sort({_id:-1}).toArray();
+      res.json(result);
+    })
+
 
     // update verification
     app.put("/verify/:id", async (req, res) => {
