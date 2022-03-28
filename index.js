@@ -371,11 +371,21 @@ const run = async () => {
 
     // load home and letest event
     app.get("/events-home", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const result = await eventsCollection.find({}).limit(3).sort({_id:-1}).toArray();
       res.json(result);
     })
     // load home and letest notice
     app.get("/notice-home", async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
       const result = await noticeCollection.find({}).limit(3).sort({_id:-1}).toArray();
       res.json(result);
     })
