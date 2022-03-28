@@ -386,7 +386,7 @@ const run = async () => {
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
       );
-      const result = await noticeCollection.find({}).limit(3).sort({_id:-1}).toArray();
+      const result = await noticeCollection.find({}).limit(4).sort({_id:-1}).toArray();
       res.json(result);
     })
 
