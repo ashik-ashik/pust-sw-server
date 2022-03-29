@@ -24,6 +24,7 @@ const run = async () => {
     const userAuthCollection = database.collection("useAuth");
     const noticeCollection = database.collection("notices");
     const eventsCollection = database.collection("events");
+    const blogsCollection = database.collection("blogs");
 
 
     
@@ -396,6 +397,25 @@ const run = async () => {
       const query = {_id : ObjectId(req.params.id)};
       const update = {$set : req.body};
       const result = await userCollection.updateOne(query, update);
+      res.json(result);
+    });
+
+    // publish blog
+    app.post('/publish-blog', async (req, res) => {
+      const blog = req.body;
+      const result = await blogsCollection.insertOne(blog);
+      res.json(result);
+    });
+
+    // load blogs
+    app.get("/blogs", async (req, res)=>{
+      const result = await blogsCollection.find({}).toArray();
+      res.json(result);
+    })
+    // load single blogs
+    app.get("/blog/:id", async (req, res)=>{
+      const query = {_id : ObjectId(req.params.id)}
+      const result = await blogsCollection.findOne(query);
       res.json(result);
     })
 
