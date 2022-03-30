@@ -409,7 +409,12 @@ const run = async () => {
 
     // load blogs
     app.get("/blogs", async (req, res)=>{
-      const result = await blogsCollection.find({}).toArray();
+      const result = await blogsCollection.find({}).sort({_id:-1}).toArray();
+      res.json(result);
+    })
+    // load blogs for home
+    app.get("/blogs-home", async (req, res)=>{
+      const result = await blogsCollection.find({}).limit(4).sort({_id:-1}).toArray();
       res.json(result);
     })
     // load single blogs
