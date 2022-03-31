@@ -414,15 +414,23 @@ const run = async () => {
     })
     // load blogs for home
     app.get("/blogs-home", async (req, res)=>{
-      const result = await blogsCollection.find({}).limit(4).sort({_id:-1}).toArray();
+      const result = await blogsCollection.find({}).limit(3).sort({_id:-1}).toArray();
       res.json(result);
     })
+    
     // load single blogs
     app.get("/blog/:id", async (req, res)=>{
       const query = {_id : ObjectId(req.params.id)}
       const result = await blogsCollection.findOne(query);
       res.json(result);
-    })
+    });
+
+    // load single blogs
+    app.delete("/blog-delete/:id", async (req, res)=>{
+      const query = {_id : ObjectId(req.params.id)}
+      const result = await blogsCollection.deleteOne(query);
+      res.json(result);
+    });
 
 
 
