@@ -25,6 +25,7 @@ const run = async () => {
     const noticeCollection = database.collection("notices");
     const eventsCollection = database.collection("events");
     const blogsCollection = database.collection("blogs");
+    const cafeCollection = database.collection("cafeProducts");
 
 
     
@@ -431,6 +432,12 @@ const run = async () => {
       const result = await blogsCollection.deleteOne(query);
       res.json(result);
     });
+
+    // load cafe products
+    app.get('/products', async(req, res) => {
+      const result = await cafeCollection.find({}).toArray();
+      res.json(result);
+    })
 
 
 
