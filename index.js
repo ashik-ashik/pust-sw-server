@@ -439,6 +439,12 @@ const run = async () => {
       res.json(result);
     })
 
+    // load single product
+    app.get("/product/:id", async (req, res)=>{
+      const query = {_id : ObjectId(req.params.id)}
+      const result = await cafeCollection.findOne(query);
+      res.json(result);
+    });
 
 
   }finally{
