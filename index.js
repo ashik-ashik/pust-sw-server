@@ -26,6 +26,8 @@ const run = async () => {
     const eventsCollection = database.collection("events");
     const blogsCollection = database.collection("blogs");
     const cafeCollection = database.collection("cafeProducts");
+    const cartCollection = database.collection("added-To-Cart");
+
 
 
     
@@ -445,6 +447,22 @@ const run = async () => {
       const result = await cafeCollection.findOne(query);
       res.json(result);
     });
+
+    // save add to cart
+    app.put('/addtocart', async (req, res)=>{
+      const data = {$set : req.body};
+      const query = {productId :req.body.productId}
+      const options = { upsert: true };
+      const result = await cartCollection.updateOne(query, data, options);
+      res.json(result);
+    });
+
+    // load added cart
+    app.get('/my-cart/:id', async (req, res)=>{
+      const query = {customerId : req.params.id};
+      const result = await cartCollection.find(query).toArray();
+      res.json(result)
+    })
 
 
   }finally{
