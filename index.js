@@ -455,6 +455,7 @@ const run = async () => {
       const options = { upsert: true };
       const result = await cartCollection.updateOne(query, data, options);
       res.json(result);
+      // res.json({});
     });
 
     // load added cart
@@ -462,6 +463,14 @@ const run = async () => {
       const query = {customerId : req.params.id};
       const result = await cartCollection.find(query).toArray();
       res.json(result)
+    });
+
+    // delete added cart
+    app.delete("/delete-cart/:id", async (req, res) => {
+      const query = {_id : ObjectId(req.params.id)}
+      const result = await cartCollection.deleteOne(query);
+      res.json(result)
+      // res.json({})
     })
 
 
