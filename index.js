@@ -27,6 +27,7 @@ const run = async () => {
     const blogsCollection = database.collection("blogs");
     const cafeCollection = database.collection("cafeProducts");
     const cartCollection = database.collection("myCart");
+    const testCollection = database.collection("testDelete");
 
 
 
@@ -467,10 +468,11 @@ const run = async () => {
 
     // delete added cart
     app.delete("/delete-cart/:id", async (req, res) => {
-      const query = {_id : ObjectId(req.params.id)}
+      const query = {productId : req.params.id}
       const result = await cartCollection.deleteOne(query);
       res.json(result);
-    })
+    });
+
 
 
   }finally{
