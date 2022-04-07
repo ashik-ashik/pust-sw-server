@@ -26,7 +26,7 @@ const run = async () => {
     const eventsCollection = database.collection("events");
     const blogsCollection = database.collection("blogs");
     const cafeCollection = database.collection("cafeProducts");
-    const cartCollection = database.collection("added-To-Cart");
+    const cartCollection = database.collection("myCart");
 
 
 
