@@ -458,6 +458,13 @@ const run = async () => {
       res.json(result);
       // res.json({});
     });
+    // update cart
+    app.put('/update-cart/:id', async (req, res)=>{
+      const data = {$set : req.body};
+      const query = {productId :req.params.id}
+      const result = await cartCollection.updateOne(query, data);
+      res.json(result);
+    });
 
     // load added cart
     app.get('/my-cart/:id', async (req, res)=>{
