@@ -27,7 +27,8 @@ const run = async () => {
     const blogsCollection = database.collection("blogs");
     const cafeCollection = database.collection("cafeProducts");
     const cartCollection = database.collection("myCart");
-    const testCollection = database.collection("testDelete");
+    // const todoCollection = database.collection("testDelete");
+    const todoCollection = database.collection("todo");
 
 
 
@@ -429,7 +430,7 @@ const run = async () => {
       res.json(result);
     });
 
-    // load single blogs
+    // delete single blogs
     app.delete("/blog-delete/:id", async (req, res)=>{
       const query = {_id : ObjectId(req.params.id)}
       const result = await blogsCollection.deleteOne(query);
@@ -479,6 +480,25 @@ const run = async () => {
       const result = await cartCollection.deleteOne(query);
       res.json(result);
     });
+
+    app.get("/todo/:id", async (req, res) => {
+      const query = {userId : req.params.id};
+      const result = await todoCollection.find(query).sort({_id:-1}).toArray();
+      res.json(result);
+    });
+
+    app.post('/todo', async (req, res)=>{
+      const data = req.body;
+      const result = await todoCollection.insertOne(data);
+      res.json(result);
+    });
+
+    app.put("/todo-update/:id", async (req, res)=>{
+      const query = {_id : ObjectId(req.params.id)};
+      const update = {$set : {isComplete : true}};
+      const result = await todoCollection.updateOne(query, update);
+      res.json(result);
+    })
 
 
 
