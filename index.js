@@ -498,6 +498,12 @@ const run = async () => {
       const update = {$set : {isComplete : true}};
       const result = await todoCollection.updateOne(query, update);
       res.json(result);
+    });
+
+    app.delete('/todo-delete/:id', async(req, res) => {
+      const query = {_id : ObjectId(req.params.id)};
+      const result = await todoCollection.deleteOne(query);
+      res.json(result);
     })
 
 
