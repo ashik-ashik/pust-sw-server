@@ -500,6 +500,20 @@ const run = async () => {
       res.json(result);
     });
 
+    app.put("/todo-edit/:id", async (req, res)=>{
+      const query = {_id : ObjectId(req.params.id)};
+      const update = {$set : req.body};
+      const result = await todoCollection.updateOne(query, update);
+      res.json(result);
+    });
+
+    app.get('/todo-edit/:id', async (req, res)=>{
+      const query = {_id : ObjectId(req.params.id)}
+      console.log(query);
+      const result = await todoCollection.findOne(query);
+      res.json(result);
+    })
+
     app.delete('/todo-delete/:id', async(req, res) => {
       const query = {_id : ObjectId(req.params.id)};
       const result = await todoCollection.deleteOne(query);
