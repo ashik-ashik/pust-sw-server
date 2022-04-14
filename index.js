@@ -509,7 +509,6 @@ const run = async () => {
 
     app.get('/todo-edit/:id', async (req, res)=>{
       const query = {_id : ObjectId(req.params.id)}
-      console.log(query);
       const result = await todoCollection.findOne(query);
       res.json(result);
     })
@@ -517,6 +516,14 @@ const run = async () => {
     app.delete('/todo-delete/:id', async(req, res) => {
       const query = {_id : ObjectId(req.params.id)};
       const result = await todoCollection.deleteOne(query);
+      res.json(result);
+    });
+
+    // manage admin
+    app.put('/manage-admin/:id', async (req, res)=>{
+      const query = { _id : ObjectId(req.params.id)};
+      const update = {$set : req.body};
+      const result = await userCollection.updateOne(query, update);
       res.json(result);
     })
 
