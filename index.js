@@ -375,6 +375,14 @@ const run = async () => {
       res.json(result)
     });
 
+    // event likes
+    app.put('/event-like/:id', async(req, res)=>{
+      const query = {_id : ObjectId(req.params.id)};
+      const data = {$set : req.body};
+      const result = await eventsCollection.updateOne(query, data);
+      res.json(result)
+    })
+
     // load home and letest event
     app.get("/events-home", async (req, res) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
