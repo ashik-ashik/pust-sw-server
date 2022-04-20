@@ -29,6 +29,7 @@ const run = async () => {
     const cartCollection = database.collection("myCart");
     // const todoCollection = database.collection("testDelete");
     const todoCollection = database.collection("todo");
+    const reviewCollection = database.collection("review");
 
 
 
@@ -532,6 +533,27 @@ const run = async () => {
       const query = { _id : ObjectId(req.params.id)};
       const update = {$set : req.body};
       const result = await userCollection.updateOne(query, update);
+      res.json(result);
+    });
+
+
+    // post review
+    app.post ('/review-post', async (req, res) => {
+      const data = req.body;
+      const result = await reviewCollection.insertOne(data);
+      res.json(result);
+    });
+
+    // review get
+    app.get('/reviews', async (req, res) => {
+      const result = await reviewCollection.find({}).sort({_id:-1}).toArray();
+      res.json(result);
+    });
+
+    // personal review
+    app.get('/reviews/:id', async (req, res)=> {
+      const query = {userId : req.params.id};
+      const result = await reviewCollection.find(query).sort({_id:-1}).toArray();
       res.json(result);
     })
 
