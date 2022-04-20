@@ -555,6 +555,21 @@ const run = async () => {
       const query = {userId : req.params.id};
       const result = await reviewCollection.find(query).sort({_id:-1}).toArray();
       res.json(result);
+    });
+
+    // update review status
+    app.put('/review-status-update/:id', async (req, res)=>{
+      const data = {$set : req.body};
+      const query = {_id : ObjectId(req.params.id)};
+      const result = await reviewCollection.updateOne(query, data);
+      res.json(result);
+    });
+
+    // delete review
+    app.delete('/review-delete/:id', async (req, res) => {
+      const query = {_id : ObjectId(req.params.id)};
+      const result = await reviewCollection.deleteOne(query);
+      res.json(result);
     })
 
 
