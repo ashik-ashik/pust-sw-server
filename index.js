@@ -570,6 +570,13 @@ const run = async () => {
       const query = {_id : ObjectId(req.params.id)};
       const result = await reviewCollection.deleteOne(query);
       res.json(result);
+    });
+
+    // load only approved review
+    app.get('/approved-review', async (req, res)=>{
+      const query = {status : 'approved'};
+      const result = await reviewCollection.find(query).sort({_id:-1}).toArray();
+      res.json(result);
     })
 
 
